@@ -4,4 +4,3 @@
 Experimenting with Processing and P5.js to make some cool stuff.
 </p>
 
-<script src="golden-spiral/sketch.js"></script>
