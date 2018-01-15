@@ -27,8 +27,11 @@ function draw() {
     r = a * pow(c, a);
 	x += r * cos(a);
     y += r * sin(a);
-    // a += 2;
-    a += 0.01;
+    a += 4.2;
+
+    // Some a values:
+    // a += 4.2 -- beautiful triangles
+    // a += 0.01;
 
 	var pos = createVector(x, y);
     trail[index] = pos;
@@ -38,7 +41,7 @@ function draw() {
         trail.shift();
         shifts++;
         index--;
-        if (shifts == 500) {
+        if (shifts == 350) {
             index = -1;
             shifts = 0;
             trail = [];
@@ -52,9 +55,9 @@ function draw() {
 
 	for (var i = 2; i < trail.length; i++) {
         // noFill();
-        strokeWeight(i * 0.05);
-        // line(trail[i-1].x, trail[i-1].y, trail[i].x, trail[i].y);
-		ellipse(trail[i].x, trail[i].y, i * 0.5, i * 0.5);
+        strokeWeight(i * 0.1);
+        line(trail[i-1].x, trail[i-1].y, trail[i].x, trail[i].y);
+		// ellipse(trail[i].x, trail[i].y, 5, 5);
         // triangle(trail[i-2].x, trail[i-2].y,trail[i-1].x, trail[i-1].y,trail[i].x, trail[i].y)
 	}
     pop();
