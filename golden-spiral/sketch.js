@@ -1,5 +1,3 @@
-
-
 var a = 0;
 var r = 0;
 var c = 1.0053611;
@@ -27,9 +25,10 @@ function draw() {
 
     // Spiral math
     r = a * pow(c, a);
-		x += r * cos(a);
+	x += r * cos(a);
     y += r * sin(a);
-    a += 2;
+    // a += 2;
+    a += 0.01;
 
 	var pos = createVector(x, y);
     trail[index] = pos;
@@ -55,7 +54,7 @@ function draw() {
         // noFill();
         strokeWeight(i * 0.05);
         // line(trail[i-1].x, trail[i-1].y, trail[i].x, trail[i].y);
-				ellipse(trail[i].x, trail[i].y, i * 0.5, i * 0.5);
+		ellipse(trail[i].x, trail[i].y, i * 0.5, i * 0.5);
         // triangle(trail[i-2].x, trail[i-2].y,trail[i-1].x, trail[i-1].y,trail[i].x, trail[i].y)
 	}
     pop();
