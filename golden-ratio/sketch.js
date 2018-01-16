@@ -23,7 +23,7 @@ function setup() {
 	fill("#E23E57");
 	frameRate(60);
 
-    slider = createSlider(0, 10, 0);
+    slider = createSlider(0, 10, 0, 0);
     slider.position(20, 20);
 }
 
