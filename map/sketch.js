@@ -9,12 +9,20 @@ var zoom = 1.4;
 // dataset
 var countries;
 
+// colors
+// #F1D18A
+// #D45D79
+// #FBF0F0
+
+
 // trail
 var i = 1;
 var time = 0;
 var points = [];
 
 var connections = [];
+
+var runs = 0;
 
 // web mercator
 function mercX(lon) {
@@ -41,11 +49,14 @@ function colorAlpha(aColor, alpha) {
 }
 
 function preload() {
-  mapimg = loadImage('https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/' +
+    // decimal style = cj5l80zrp29942rmtg0zctjto
+    // mapbox://styles/crochi/cjg9xowdu004i2rpgwfv7en0j
+    // mapimg = loadImage('https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/' +
+    mapimg = loadImage('https://api.mapbox.com/styles/v1/crochi/cjg9xowdu004i2rpgwfv7en0j/static/' +
     clon + ',' + clat + ',' + zoom + '/' +
     ww + 'x' + hh +
     '?access_token=pk.eyJ1IjoiY3JvY2hpIiwiYSI6ImNqZzh5dDN3cThzaWMyd21kbzh0cWxvZGgifQ.WGF1BgdeYFXPIC8TStBCxA');
-  countries = loadStrings('data/countries.csv');
+    countries = loadStrings('data/countries.csv');
 }
 
 function setup() {
@@ -94,8 +105,8 @@ function draw() {
 		ellipse(points[j].x, points[j].y, 4, 4);
 	}
 
-    stroke("#D45D79");
-	fill("#D45D79");
+    stroke("#F1D18A");
+	fill("#F1D18A");
 	ellipse(points[i-1].x, points[i-1].y, 5);
 	ellipse(points[i].x, points[i].y, 5);
 
@@ -103,12 +114,12 @@ function draw() {
     // time atual = min
     strokeWeight(2);
     var alpha = 1;
-    stroke(colorAlpha('#D45D79', alpha));
+    stroke(colorAlpha('#F1D18A', alpha));
 	// line(points[i-1].x,points[i-1].y,points[i].x,points[i].y);
 
     country1 = countries[i].split(/,/);
     country2 = countries[i+1].split(/,/);
-    console.log(country1[3] + " -> " + country2[3]);
+    // console.log(country1[3] + " -> " + country2[3]);
 
     var connection = createVector(i-1,i,1);
     append(connections, connection);
@@ -117,15 +128,24 @@ function draw() {
     // draw all connections
     for (var j = 0; j < connections.length; j++) {
         connection = connections[j];
-        stroke(colorAlpha('#D45D79', connection.z));
+        stroke(colorAlpha('#F1D18A', connection.z));
         connections[j].z -= 0.15;
         line(points[connection.x].x,points[connection.x].y,points[connection.y].x,points[connection.y].y);
     }
 
     i++;
     time += 1;
+
+    if (runs > 0) {
+        if (i >= 60) {
+            i = 50;
+        }
+    }
+
     if (i >= points.length) {
 		i = 1;
+        runs += 1;
+        console.log("RUN FINISHED");
         // points.shift();
 	}
 }
