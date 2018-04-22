@@ -161,7 +161,10 @@ function draw() {
         strokeWeight(0.5);
         stroke(colorAlpha('#d14545', alpha));
         fill(colorAlpha('#d14545', alpha));
-        connections[j][4] -= 0.012; // decrease alpha
+        connections[j][4] -= 0.0012; // decrease alpha
+        if (connections[j][4] <= 0) {
+            connections.splice(j, 1);
+        }
         line(src_x,src_y,dest_x,dest_y);
         ellipse(src_x, src_y, 1, 1);
         ellipse(dest_x, dest_y, 1, 1);
@@ -179,6 +182,7 @@ function draw() {
     strokeWeight(1);
     textFont(font);
     textSize(16);
+    fill('#d14545');
     text(str(i) + "/" + str(flights.length), -500, 350);
 
 }
