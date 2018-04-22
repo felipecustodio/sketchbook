@@ -11,14 +11,14 @@ zoom = 1.4
 
 def mercX(lon):
     lon = np.radians(lon)
-    a = (256 / np.pi) * np.power(zoom, 2)
+    a = (256 / np.pi) * np.power(2, zoom)
     b = lon + np.pi
     return a * b
 
 
 def mercY(lat):
     lat = np.radians(lat)
-    a = (256 / np.pi) * np.power(zoom, 2)
+    a = (256 / np.pi) * np.power(2, zoom)
     b = np.tan(np.pi / 4 + lat / 2)
     c = np.pi - np.log(b)
     return a * c
