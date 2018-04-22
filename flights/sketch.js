@@ -77,7 +77,6 @@ function setup() {
 	var canvas = createCanvas(ww, hh);
 
     smooth();
-	frameRate(20);
 
 	translate(width/2, height/2);
 
@@ -182,8 +181,8 @@ function draw() {
 
     // draw everything (no tail)
     strokeWeight(1);
-    stroke(colorAlpha('#d14545', alpha));
-    fill(colorAlpha('#d14545', alpha));
+    stroke(colorAlpha('#d14545', 0.05));
+    fill(colorAlpha('#d14545', 0.05));
     line(src_x,src_y,dest_x,dest_y);
     ellipse(src_x, src_y, 1, 1);
     ellipse(dest_x, dest_y, 1, 1);
