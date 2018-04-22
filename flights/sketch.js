@@ -47,8 +47,8 @@ function mercY(lat) {
 
 function colorAlpha(aColor, alpha) {
   var c = color(aColor);
-  if (alpha <= 0.05) {
-      alpha = 0.05;
+  if (alpha <= 0.1) {
+      alpha = 0.1;
   }
   return color('rgba(' +  [red(c), green(c), blue(c), alpha].join(',') + ')');
 }
@@ -117,7 +117,7 @@ function setup() {
         var src_y = data[1];
         var dest_x = data[2];
         var dest_y = data[3];
-        var alpha = 1;
+        var alpha = 0.8;
         flight = [src_x, src_y, dest_x, dest_y, alpha]
         append(flights, flight)
     }
@@ -137,15 +137,7 @@ function draw() {
 	translate(width / 2, height / 2);
 
     imageMode(CENTER);
-    // image(mapimg, 0, 0, 1280, 720);
-
-    // draw all airports points
-    // for (var j = 0; j < airports.length; j++) {
-    //     strokeWeight(1);
-    //     stroke("#31339e");
-    //     fill("#31339e");
-	// 	ellipse(airports[j].x, airports[j].y, 1, 1);
-	// }
+    image(mapimg, 0, 0, 1280, 720);
 
     // draw all flights
     // src_x, src_y, dest_x, dest_y, alpha
@@ -156,38 +148,25 @@ function draw() {
     dest_y = flights[i][3];
     alpha = flights[i][4];
 
-    // append(connections, flight)
+    append(connections, flight)
 
     // draw all previous connections
-    // for (var j = 0; j < connections.length; j++) {
-    //     flight = connections[j]
-    //     src_x = flight[0];
-    //     src_y = flight[1];
-    //     dest_x = flight[2];
-    //     dest_y = flight[3];
-    //     alpha = flight[4]
-    //     strokeWeight(2);
-    //     stroke(colorAlpha('#d14545', alpha));
-    //     fill(colorAlpha('#d14545', alpha));
-    //     connections[j][4] -= 0.01; // decrease alpha
-    //     // remove from list when alpha <= 0
-    //     // if (connections[j][4] <= 0) {
-    //           // connections.splice(j, 1);
-    //     // }
-    //     line(src_x,src_y,dest_x,dest_y);
-    //     ellipse(src_x, src_y, 4, 4);
-    //     ellipse(dest_x, dest_y, 4, 4);
-    // }
+    for (var j = 0; j < connections.length; j++) {
+        flight = connections[j]
+        src_x = flight[0];
+        src_y = flight[1];
+        dest_x = flight[2];
+        dest_y = flight[3];
+        alpha = flight[4];
+        strokeWeight(0.5);
+        stroke(colorAlpha('#d14545', alpha));
+        fill(colorAlpha('#d14545', alpha));
+        connections[j][4] -= 0.012; // decrease alpha
+        line(src_x,src_y,dest_x,dest_y);
+        ellipse(src_x, src_y, 1, 1);
+        ellipse(dest_x, dest_y, 1, 1);
+    }
 
-    // draw everything (no tail)
-    strokeWeight(1);
-    stroke(colorAlpha('#d14545', 0.05));
-    fill(colorAlpha('#d14545', 0.05));
-    line(src_x,src_y,dest_x,dest_y);
-    ellipse(src_x, src_y, 1, 1);
-    ellipse(dest_x, dest_y, 1, 1);
-
-    // test 'cycle'
     if (i >= flights.length) {
         i = 0;
         save(canvas, 'canvas.png');
@@ -197,9 +176,9 @@ function draw() {
     i++;
 
     // GUI
-    // strokeWeight(2);
-    // textFont(font);
-    // textSize(36);
-    // text(i, -450, 200);
+    strokeWeight(1);
+    textFont(font);
+    textSize(16);
+    text(str(i) + "/" + str(flights.length), -500, 350);
 
 }
