@@ -17,12 +17,14 @@ var countries;
 
 // trail
 var i = 1;
-var time = 0;
 var points = [];
-
 var connections = [];
 
+var stop;
 var runs = 0;
+
+// font
+var font;
 
 // web mercator
 function mercX(lon) {
@@ -49,21 +51,20 @@ function colorAlpha(aColor, alpha) {
 }
 
 function preload() {
-    // decimal style = cj5l80zrp29942rmtg0zctjto
-    // mapbox://styles/crochi/cjg9xowdu004i2rpgwfv7en0j
-    // mapimg = loadImage('https://api.mapbox.com/styles/v1/mapbox/dark-v9/static/' +
     mapimg = loadImage('https://api.mapbox.com/styles/v1/crochi/cjg9xowdu004i2rpgwfv7en0j/static/' +
     clon + ',' + clat + ',' + zoom + '/' +
     ww + 'x' + hh +
     '?access_token=pk.eyJ1IjoiY3JvY2hpIiwiYSI6ImNqZzh5dDN3cThzaWMyd21kbzh0cWxvZGgifQ.WGF1BgdeYFXPIC8TStBCxA');
     countries = loadStrings('data/countries.csv');
+    font = loadFont('assets/CPMono_Bold.otf');
+
 }
 
 function setup() {
 	createCanvas(ww, hh);
 
     smooth();
-	frameRate(20);
+	frameRate(15);
 
 	translate(width / 2, height / 2);
 	imageMode(CENTER);
@@ -91,6 +92,8 @@ function setup() {
 		var pos = createVector(x,y);
 		append(points,pos);
 	}
+
+    stop = int(random(0,points.length - 1));
 }
 
 function draw() {
@@ -98,43 +101,35 @@ function draw() {
     imageMode(CENTER);
 	image(mapimg, 0, 0);
 
+    // draw all countries points
     for (var j = 0; j < points.length; j++) {
         stroke("#FBF0F0");
         fill("#FBF0F0");
-        // noFill();
 		ellipse(points[j].x, points[j].y, 4, 4);
 	}
 
-    stroke("#F1D18A");
-	fill("#F1D18A");
-	ellipse(points[i-1].x, points[i-1].y, 5);
-	ellipse(points[i].x, points[i].y, 5);
-
-    // 0 = max
-    // time atual = min
-    strokeWeight(2);
-    var alpha = 1;
-    stroke(colorAlpha('#F1D18A', alpha));
-	// line(points[i-1].x,points[i-1].y,points[i].x,points[i].y);
-
+    // create connection
     country1 = countries[i].split(/,/);
     country2 = countries[i+1].split(/,/);
-    // console.log(country1[3] + " -> " + country2[3]);
+    console.log(country1[3] + " -> " + country2[3]);
+
+    // start/end points
+    stroke("#F1D18A");
+    fill("#F1D18A");
+    ellipse(points[i-1].x, points[i-1].y, 5);
+    ellipse(points[i].x, points[i].y, 5);
 
     var connection = createVector(i-1,i,1);
     append(connections, connection);
-    console.log(connections.length);
 
     // draw all connections
     for (var j = 0; j < connections.length; j++) {
         connection = connections[j];
+        strokeWeight(connection.z + 1);
         stroke(colorAlpha('#F1D18A', connection.z));
         connections[j].z -= 0.15;
         line(points[connection.x].x,points[connection.x].y,points[connection.y].x,points[connection.y].y);
     }
-
-    i++;
-    time += 1;
 
     if (runs > 0) {
         if (i >= 60) {
@@ -142,10 +137,17 @@ function draw() {
         }
     }
 
+    i++;
     if (i >= points.length) {
 		i = 1;
         runs += 1;
         console.log("RUN FINISHED");
         // points.shift();
 	}
+
+    // GUI
+    textFont(font);
+    textSize(36);
+    text(stop, -500, 250);
+
 }
