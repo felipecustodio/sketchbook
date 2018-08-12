@@ -1,11 +1,14 @@
-// graphics
-PFont font;
-
-// motion blur
+//////////////////////////////////////////////////////////////////////
+// recording controls room •|龴◡龴|•
+// motion blur settings
 int samplesPerFrame = 5;
 float shutterAngle = 1.5;
+// assets
+PFont font;
+// film roll
 int[][] result;
 float t, c;
+//////////////////////////////////////////////////////////////////////
 
 float ease(float p, float g) {
   if (p < 0.5)
@@ -47,10 +50,9 @@ void draw() {
         int(result[i][1]*1.0/samplesPerFrame) << 8 |
         int(result[i][2]*1.0/samplesPerFrame);
     updatePixels();
-    println(frameCount);
 
     if (frameCount <= numFrames && recording) {
-      TImage frame = new TImage(width,height,RGB,sketchPath("frame_"+nf(frameCount,3)+".png"));
+      TImage frame = new TImage(width,height,RGB,sketchPath("frames/frame_"+nf(frameCount,3)+".png"));
       frame.set(0,0,get());
       frame.saveThreaded();
       println(frameCount,"/",numFrames);
@@ -75,23 +77,23 @@ class TImage extends PImage implements Runnable{//separate thread for saving ima
 }
 
 //////////////////////////////////////////////////////////////////////
-// Welcome to the filming room - \˚ㄥ˚\
-// recording
+// filming room - \˚ㄥ˚\
 boolean recording = true;
-int numFrames = 161;
+int numFrames = 1;
 //////////////////////////////////////////////////////////////////////
 
 void setup() {
-  size(800, 800, P3D);
+  size(500, 500);
   result = new int[width*height][3];
   font = loadFont("CMUSerif-BoldItalic-64.vlw");
   textFont(font, 18);
 }
 
 void draw_() {
+  surface.setTitle(getClass().getSimpleName() + " /// " + str(frameRate));
   background(#ECE9E4);
   fill(#5E5554);
   stroke(#5E5554);
   text("Template",20,35);
-  
+
 }
