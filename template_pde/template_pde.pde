@@ -7,7 +7,6 @@ float shutterAngle = 1.5;
 PFont font;
 // film roll
 int[][] result;
-float t, c;
 //////////////////////////////////////////////////////////////////////
 
 float ease(float p, float g) {
@@ -33,7 +32,6 @@ void draw() {
         result[i][a] = 0;
 
     for (int sa=0; sa<samplesPerFrame; sa++) {
-      t = map(frameCount-1 + sa*shutterAngle/samplesPerFrame, 0, numFrames, 0, 1);
       draw_();
       loadPixels();
       for (int i=0; i<pixels.length; i++) {
@@ -59,7 +57,8 @@ void draw() {
     }
 }
 
-class TImage extends PImage implements Runnable{//separate thread for saving images
+class TImage extends PImage implements Runnable {
+  //separate thread for saving images
   String filename;
 
   TImage(int w,int h,int format,String filename){
@@ -83,17 +82,23 @@ int numFrames = 1;
 //////////////////////////////////////////////////////////////////////
 
 void setup() {
-  size(500, 500);
+  size(500, 500, P3D);
+  smooth(8);
+  // blendMode(MULTIPLY);
+
   result = new int[width*height][3];
   font = loadFont("CMUSerif-BoldItalic-64.vlw");
   textFont(font, 18);
 }
 
 void draw_() {
+  push();
   surface.setTitle(getClass().getSimpleName() + " /// " + str(frameRate));
   background(#ECE9E4);
   fill(#5E5554);
   stroke(#5E5554);
   text("Template",20,35);
 
+
+  pop();
 }
