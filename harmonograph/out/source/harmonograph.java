@@ -15,7 +15,7 @@ import java.io.IOException;
 public class harmonograph extends PApplet {
 
 //////////////////////////////////////////////////////////////////////
-// recording controls room •|龴◡龴|•
+// recording controls room \u2022|\u9fb4\u25e1\u9fb4|\u2022
 // motion blur settings
 int samplesPerFrame = 5;
 float shutterAngle = 1.5f;
@@ -69,7 +69,7 @@ public void draw() {
       TImage frame = new TImage(width,height,RGB,sketchPath("frames/frame_"+nf(frameCount,3)+".png"));
       frame.set(0,0,get());
       frame.saveThreaded();
-      println(frameCount,"/",numFrames);
+      println("frames saved: ",frameCount,"/",numFrames);
     }
 }
 
@@ -91,7 +91,7 @@ class TImage extends PImage implements Runnable{//separate thread for saving ima
 }
 
 //////////////////////////////////////////////////////////////////////
-// filming room - \˚ㄥ˚\
+// filming room - \\u02da\u3125\u02da\
 boolean recording = true;
 int numFrames = 1;
 //////////////////////////////////////////////////////////////////////
@@ -115,69 +115,81 @@ public void setup() {
   textFont(font, 18);
 
   // initial parameters for pendulums
-  f1 = 2;
-  p1 = PI/16;
-  d1 = -0.02f;
+  // f1 = 2;
+  // p1 = PI/16;
+  // d1 = -0.02;
 
-  f2 = 6;
-  p2 = PI/2;
-  d2 = -0.0315f;
+  // f2 = 6;
+  // p2 = PI/2;
+  // d2 = -0.0315;
 
-  f3 = 1.002f;
-  p3 = 13 * PI/16;
-  d3 = -0.02f;
+  // f3 = 1.002;
+  // p3 = 13 * PI/16;
+  // d3 = -0.02;
 
-  f4 = 3;
-  p4 = PI;
-  d4 = -0.02f;
+  // f4 = 3;
+  // p4 = PI;
+  // d4 = -0.02;
+
+  f1 = PApplet.parseInt(random(1, 20));
+  p1 = PI/PApplet.parseInt(random(1, 20));
+  d1 = random(0, 1);
+  f2 = PApplet.parseInt(random(1, 20));
+  p2 = PI/PApplet.parseInt(random(1, 20));
+  d2 = random(0, 1);
+  f3 = PApplet.parseInt(random(1, 20));
+  p3 = PI/PApplet.parseInt(random(1, 20));
+  d3 = random(0, 1);
+  f4 = PApplet.parseInt(random(1, 20));
+  p4 = PI/PApplet.parseInt(random(1, 20));
+  d4 = random(0, 1);
 
   // calculate points
   points = new ArrayList<PVector>();
 
-  for (float t = 0; t < 50; t += 0.01f) {
-    x = exp(d1*t)*sin((t*f1)+p1) + exp(d2*t)*sin(t*f2+p2);
-    y = exp(d3*t)*sin((t*f3)+p3) + exp(d4*t)*sin(t*f4+p4);
+  for (float t = 0; t < 100; t += 0.01f) {
+    x = exp(-d1*t)*sin((t*f1)+p1) + exp(-d2*t)*sin(t*f2+p2);
+    y = exp(-d3*t)*sin((t*f3)+p3) + exp(-d4*t)*sin(t*f4+p4);
 
     position = new PVector(x * 120, y * 120);
     points.add(position);
-    println("t:", t, 200);
+    println("Calculating... | t:", t, 200);
   }
 }
 
 public void draw_() {
   push();
   surface.setTitle(getClass().getSimpleName() + " /// " + str(frameRate));
-  // background(#ECE9E4);
-  fill(0xff5E5554);
-  stroke(0xff5E5554);
-  strokeWeight(1);
-  // text("Harmonograph", 20, 35);
-  translate(width/2, height/2);
-
-  // draw entire thing at once
-  // beginShape(POINTS);
-  // for (PVector current : points) {
-  //   vertex(current.x, current.y);
-  // }
-  // endShape();
-  // noLoop();
- 
-  // draw entire thing with background
   background(0xffECE9E4);
   fill(0xff5E5554);
   stroke(0xff5E5554);
+  // strokeWeight(2);
+  // text("Harmonograph", 20, 35);
+  translate(width/2, height/2);
+
   strokeWeight(1);
+  // draw entire thing at once
+  beginShape(POINTS);
+  for (int j = 1; j < 2000; j++) {
+    current = points.get(j);
+    vertex(current.x, current.y);
+  }
+  endShape();
+
+  // draw entire thing with background
   for (int j = 1; j < i; j++) {
     current = points.get(j);
     previous = points.get(j-1);
     line(previous.x, previous.y, current.x, current.y);
   }
   current = points.get(i);
-  ellipse(current.x, current.y, 5, 5);
+  ellipse(current.x, current.y, 2, 2);
 
-  if (i < points.size() - 1) {
+  if (i < 3000) {
     i++;
-    println("frame:",frameCount,"| i:", i, "/", points.size());
+    println("frame:",frameCount,"| i:", i, "/ 3000");
+  } else {
+    noLoop();
   }
 
   // draw trail without background
@@ -187,10 +199,40 @@ public void draw_() {
 
   // if (i < points.size() - 1) {
   //   i++;
-  //   println("i:", i, "/", points.size());
+  //   println("Rendering... | i:", i, "/", points.size());
   // }
 
   pop();
+}
+
+public void mouseClicked() {
+  f1 = PApplet.parseInt(random(1, 20));
+  p1 = PI/PApplet.parseInt(random(1, 20));
+  d1 = random(0, 1);
+  f2 = PApplet.parseInt(random(1, 20));
+  p2 = PI/PApplet.parseInt(random(1, 20));
+  d2 = random(0, 1);
+  f3 = PApplet.parseInt(random(1, 20));
+  p3 = PI/PApplet.parseInt(random(1, 20));
+  d3 = random(0, 1);
+  f4 = PApplet.parseInt(random(1, 20));
+  p4 = PI/PApplet.parseInt(random(1, 20));
+  d4 = random(0, 1);
+
+  // calculate points
+  points = new ArrayList<PVector>();
+
+  for (float t = 0; t < 100; t += 0.01f) {
+    x = exp(-d1*t)*sin((t*f1)+p1) + exp(-d2*t)*sin(t*f2+p2);
+    y = exp(-d3*t)*sin((t*f3)+p3) + exp(-d4*t)*sin(t*f4+p4);
+
+    position = new PVector(x * 120, y * 120);
+    points.add(position);
+    println("Calculating... | t:", t, 200);
+  }
+
+  i = 1;
+
 }
   public void settings() {  size(500, 500); }
   static public void main(String[] passedArgs) {
