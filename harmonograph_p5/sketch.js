@@ -11,7 +11,7 @@ function setup() {
   gamma = 0;
 }
 
-function mouseClicked() {
+function mousePressed() {
   particles.push(new Particle(0, 0));
   windchime.soundNewUser();
   windchime.soundWikiChange();
