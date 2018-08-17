@@ -20,6 +20,7 @@ function Particle(x, y) {
 
   this.x = x;
   this.y = y;
+  this.z = 0;
 
   colors = ["#35477d", "#6c5b7b", "#c06c84", "#f67280"];
   this.color = colors[Math.floor(Math.random() * colors.length)];
@@ -27,7 +28,7 @@ function Particle(x, y) {
 
   this.trail_length = Math.floor(Math.random() * 20);
 
-  this.head_size = Math.floor(Math.random() * 0);
+  this.head_size = Math.floor((Math.random() * 8) + 2);
   
   console.log("Spawned particle.");
 
@@ -36,26 +37,22 @@ function Particle(x, y) {
   this.update = function() {
     this.x = exp(-this.d1 * this.t) * sin((this.t * this.f1) + this.p1) + exp(-this.d2 * this.t) * sin(this.t * this.f2 + this.p2);
     this.y = exp(-this.d3 * this.t) * sin((this.t * this.f3) + this.p3) + exp(-this.d4 * this.t) * sin(this.t * this.f4 + this.p4);
+    this.z = sin(this.p4 + this.f4 * this.t) * exp(this.d4 * this.t);
 
     this.x *= 120;
     this.y *= 120;
+    this.z *= 120;
 
-    this.t += 0.01;
-    if (this.alpha < 1) {
+    if (this.alpha < 5) {
       this.alpha += 0.001;
     }
 
+    this.t += 0.01;
     if (this.t >= 200) {
-      console.log(this.t);
       this.t = 0;
     }
 
-    for (var i = 0; i < this.history.length; i++) {
-      this.history[i].x += random(-0.1, 0.1);
-      this.history[i].y += random(-0.1, 0.1);
-    }
-
-    var v = createVector(this.x, this.y);
+    var v = createVector(this.x, this.y, this.z);
     this.history.push(v);
     if (this.history.length > this.trail_length) {
       this.history.splice(0, 1);
@@ -66,14 +63,17 @@ function Particle(x, y) {
     strokeWeight(this.alpha);
     stroke(this.color);
     noFill();
-    beginShape();
+    beginShape(POINTS);
     for (var i = 0; i < this.history.length; i++) {
       var pos = this.history[i];
-      vertex(pos.x, pos.y);
+      vertex(pos.x, pos.y, pos.z);
     }
     endShape();
-    
-    fill(this.color);
-    ellipse(this.x, this.y, this.head_size, this.head_size);
+
+    // fill(this.color);
+    // ellipse(this.x, this.y, this.head_size, this.head_size);
+    translate(this.x, this.y, this.z);
+    sphere(this.head_size, 5, 5);
+    translate(-this.x, -this.y, -this.z);
   }
 }
