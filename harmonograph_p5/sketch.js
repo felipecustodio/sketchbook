@@ -1,10 +1,8 @@
-// Daniel Shiffman
-// code for https://youtu.be/vqE8DMfOajk
-
 var particles = [];
 
 function setup() {
-  createCanvas(600, 600);
+  // createCanvas(800, 800);
+  createCanvas(windowWidth, windowHeight);
 }
 
 function mousePressed() {
@@ -15,11 +13,10 @@ function mousePressed() {
 }
 
 function draw() {
-  background("#182952");
+  background("#262525");
   translate(width / 2, height / 2);
   for (var i = 0; i < particles.length; i++) {
     particles[i].update();
     particles[i].show();
   }
-  
 }

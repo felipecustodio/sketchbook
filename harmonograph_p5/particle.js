@@ -1,6 +1,3 @@
-// Daniel Shiffman
-// code for https://youtu.be/vqE8DMfOajk
-
 function Particle(x, y) {
 
   this.f1 = 2;
@@ -30,7 +27,7 @@ function Particle(x, y) {
 
   this.trail_length = Math.floor(Math.random() * 20);
 
-  this.head_size = Math.floor(Math.random() * 5);
+  this.head_size = Math.floor(Math.random() * 0);
   
   console.log("Spawned particle.");
 
