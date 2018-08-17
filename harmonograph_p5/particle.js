@@ -70,7 +70,7 @@ function Particle(x, y) {
     }
     endShape();
 
-    // fill(this.color);
+    fill(this.color);
     // ellipse(this.x, this.y, this.head_size, this.head_size);
     translate(this.x, this.y, this.z);
     sphere(this.head_size, 5, 5);

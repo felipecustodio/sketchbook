@@ -1,7 +1,7 @@
 var particles = [];
 const windchime = new Windchime();
 
-var gamma;
+var rotX, rotY, rotZ;
 var xpos, ypos;
 
 function setup() {
@@ -22,7 +22,11 @@ function mousePressed() {
 
 function draw() {
   background("#262525");
-  rotate(radians(gamma));
+
+  rotateX(radians(rotX));
+  rotateY(radians(rotY));
+  rotateZ(radians(rotZ));
+
   for (var i = 0; i < particles.length; i++) {
     particles[i].update();
     particles[i].show();
@@ -31,5 +35,7 @@ function draw() {
 
 // accelerometer
 window.addEventListener('deviceorientation', function (e) {
-  gamma = e.gamma;
+  rotX = e.alpha;
+  rotY = e.beta;
+  rotZ = e.gamma;
 });
