@@ -170,6 +170,7 @@ function setup() {
     timeDiff /= 1000;
     var seconds = Math.round(timeDiff);
     console.log(seconds + " seconds");
+    document.getElementById("tips1").style.visibility = "visible";
 }
 
 var i = 0;
@@ -195,6 +196,8 @@ function draw() {
             ellipse(airports[j].x, airports[j].y, 1, 1);
         }
         document.getElementById("counter").style.visibility = "visible";
+        document.getElementById("tips2").style.visibility = "visible";
+
         return;
     }
 
