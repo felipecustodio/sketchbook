@@ -1,3 +1,8 @@
+// drawing
+var paused = true;
+var start = false;
+var running = false;
+
 // map
 var mapimg;
 var clat = 0;
@@ -20,8 +25,9 @@ var flights = [];
 // #31339e
 
 // trail
-var i = 0;
 var connections = [];
+var max_dist = 0;
+var min_dist = 999999;
 
 var stop;
 var runs = 0;
@@ -54,13 +60,13 @@ function colorAlpha(aColor, alpha) {
 }
 
 function preload() {
-    console.log("LOADING MAP");
+    // console.log("LOADING MAP");
 
     // mapbox://styles/crochi/cjgadyzig06ba2ss5ngizxhvn
-    mapimg = loadImage('https://api.mapbox.com/styles/v1/crochi/cjgadyzig06ba2ss5ngizxhvn/static/' +
-    clon + ',' + clat + ',' + zoom + '/' +
-    ww + 'x' + hh + '@2x' +
-    '?access_token=pk.eyJ1IjoiY3JvY2hpIiwiYSI6ImNqZzh5dDN3cThzaWMyd21kbzh0cWxvZGgifQ.WGF1BgdeYFXPIC8TStBCxA');
+    // mapimg = loadImage('https://api.mapbox.com/styles/v1/crochi/cjgadyzig06ba2ss5ngizxhvn/static/' +
+    // clon + ',' + clat + ',' + zoom + '/' +
+    // ww + 'x' + hh + '@2x' +
+    // '?access_token=pk.eyJ1IjoiY3JvY2hpIiwiYSI6ImNqZzh5dDN3cThzaWMyd21kbzh0cWxvZGgifQ.WGF1BgdeYFXPIC8TStBCxA');
 
     // mapimg = loadImage('https://api.mapbox.com/styles/v1/crochi/cjga6dqkb33q32ro7ewu2gt0n/static/' +
     // clon + ',' + clat + ',' + zoom + '/' +
@@ -70,24 +76,22 @@ function preload() {
     console.log("LOADING FILES");
     airports_data = loadStrings("data/airports.csv");
     flights_data = loadStrings("data/flights.csv");
-    font = loadFont('assets/CPMono_Bold.otf');
 }
 
 function setup() {
-	var canvas = createCanvas(ww, hh);
+    var canvas = createCanvas(windowWidth, windowHeight);
+    canvas.parent('sketch-holder');
+    background("#fbeed7");
 
     smooth();
-
-	translate(width/2, height/2);
-
-	imageMode(CENTER);
-	image(mapimg, 0, 0, 1280, 720);
+    translate(width/2, height/2);
+    
 
 	var cx = mercX(clon);
   	var cy = mercY(clat);
 
 	// parse airports with latitude, longitude
-    console.log("PARSING AIRPORTS");
+    console.log("PARSING AIRPORTS...");
 	for (var i = 1; i < airports_data.length; i++) {
 		var data = airports_data[i].split(/,/);
 
@@ -106,83 +110,128 @@ function setup() {
         // store coordinates and id
 		var info = createVector(x,y,id);
 		append(airports,info);
-	}
-    console.log("FINISHED PARSING AIRPORTS");
-
+    }
+    
     // parse routes
-    console.log("PARSING FLIGHTS");
+    console.log("PARSING FLIGHTS...");
     for (var i = 0; i < flights_data.length; i++) {
         var data = flights_data[i].split(/,/);
         var src_x = data[0];
         var src_y = data[1];
         var dest_x = data[2];
         var dest_y = data[3];
-        var alpha = 0.8;
-        flight = [src_x, src_y, dest_x, dest_y, alpha]
+        var distance = dist(src_x, src_y, dest_x, dest_y);
+        if (distance > max_dist) {
+            max_dist = distance;
+        }
+        if (distance < min_dist) {
+            min_dist = distance;
+        }
+        var alpha = 0.001;
+        flight = [src_x, src_y, dest_x, dest_y, alpha, distance]
         append(flights, flight)
     }
+    console.log(max_dist, min_dist);
 
     // draw all airports points
+    console.log("DRAWING AIRPORTS...");
     for (var j = 0; j < airports.length; j++) {
-        strokeWeight(1);
-        stroke("#000000");
-        fill("#000000");
+        strokeWeight(2);
+        stroke(colorAlpha("#843b62", 0.4));
+        // fill(colorAlpha("#843b62", 0.4));
+        noFill();
 		ellipse(airports[j].x, airports[j].y, 1, 1);
-	}
-
-    console.time("1%");
+    }
+    
+    // draw all flights
+    console.log("DRAWING FLIGHTS...");
+    var i = 0;
+    var startTime = new Date();
+    while (i < flights.length) {
+        flight = flights[i];
+        src_x = flights[i][0];
+        src_y = flights[i][1];
+        dest_x = flights[i][2];
+        dest_y = flights[i][3];
+        alpha = flights[i][4];
+        distance = flights[i][5];
+        strokeWeight(map(distance, min_dist, max_dist, 1, 0.1));
+        // ff7657
+        // '#d14545'
+        stroke(colorAlpha('#ff7657', alpha));
+        fill(colorAlpha('#ff7657', alpha));
+        line(src_x,src_y,dest_x,dest_y);
+        ellipse(src_x, src_y, 1, 1);
+        ellipse(dest_x, dest_y, 1, 1);
+        i++;
+    }
+    var endTime = new Date();
+    var timeDiff = endTime - startTime;
+    timeDiff /= 1000;
+    var seconds = Math.round(timeDiff);
+    console.log(seconds + " seconds");
 }
 
+var i = 0;
+
 function draw() {
-	translate(width / 2, height / 2);
 
-    imageMode(CENTER);
-    image(mapimg, 0, 0, 1280, 720);
+    translate(width / 2, height / 2);
 
-    // draw all flights
-    // src_x, src_y, dest_x, dest_y, alpha
+    // p.value(str(i));
+    document.getElementById("counter").innerHTML = str(i) + "/" + str(flights.length);
+
+
+    if (start && !running) {
+        start = false;
+        running = true;
+        background("#fbeed7");
+        // draw all airports points
+        for (var j = 0; j < airports.length; j++) {
+            strokeWeight(2);
+            stroke(colorAlpha("#843b62", 0.4));
+            // fill(colorAlpha("#843b62", 0.4));
+            noFill();
+            ellipse(airports[j].x, airports[j].y, 1, 1);
+        }
+        document.getElementById("counter").style.visibility = "visible";
+        return;
+    }
+
+    if (paused) {
+        return;
+    }
+ 
+    // draw current flight
     flight = flights[i];
     src_x = flights[i][0];
     src_y = flights[i][1];
     dest_x = flights[i][2];
     dest_y = flights[i][3];
     alpha = flights[i][4];
+    distance = flights[i][5];
+    append(connections, flight);
 
-    append(connections, flight)
+    strokeWeight(map(distance, min_dist, max_dist, 1, 0.1) + 1);
+    stroke(colorAlpha('#ff7657', alpha));
+    fill(colorAlpha('#ff7657', alpha));
+    line(src_x,src_y,dest_x,dest_y);
 
-    // draw all previous connections
-    for (var j = 0; j < connections.length; j++) {
-        flight = connections[j]
-        src_x = flight[0];
-        src_y = flight[1];
-        dest_x = flight[2];
-        dest_y = flight[3];
-        alpha = flight[4];
-        strokeWeight(0.5);
-        stroke(colorAlpha('#d14545', alpha));
-        fill(colorAlpha('#d14545', alpha));
-        connections[j][4] -= 0.0012; // decrease alpha
-        if (connections[j][4] <= 0) {
-            connections.splice(j, 1);
-        }
-        line(src_x,src_y,dest_x,dest_y);
-        ellipse(src_x, src_y, 1, 1);
-        ellipse(dest_x, dest_y, 1, 1);
-    }
+    i += 1;
+}
 
-    if (i >= flights.length) {
-        i = 0;
-        save(canvas, 'canvas.png');
+function mousePressed() {
+    if (paused) {
+        paused = false;
+        loop();
+    } else {
+        paused = true;
         noLoop();
     }
-    console.log(str(i) + "/" + str(flights.length));
-    i++;
+}
 
-    // GUI
-    strokeWeight(1);
-    textFont(font);
-    textSize(16);
-    fill('#d14545');
-    text(str(i) + "/" + str(flights.length), -500, 350);
-
+function keyPressed() {
+    if (key == 'Enter') {
+        start = true;
+    }
 }

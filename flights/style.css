@@ -1,12 +1,119 @@
-html, body {
-    /* background-color: #244F3Cff; */
-    background-color: #000000ff;
-    margin: 0;
-    padding: 0;  display: flex;
+@font-face {
+    font-family: "Computer Modern";
+    src: url('https://spratt.github.io/Computer-Modern/cmunss.otf');
+  }
+  
+@font-face {
+  font-family: "Computer Modern";
+  src: url('https://spratt.github.io/Computer-Modern/cmunsx.otf');
+  font-weight: bold;
+}
 
-    /* This centers our sketch horizontally. */
-    justify-content: center;
+@font-face {
+  font-family: "Computer Modern";
+  src: url('https://spratt.github.io/Computer-Modern/cmunsi.otf');
+  font-style: italic, oblique;
+}
 
-    /* This centers our sketch vertically. */
-    align-items: center;
+@font-face {
+  font-family: "Computer Modern";
+  src: url('https://spratt.github.io/Computer-Modern/cmunbxo.otf');
+  font-weight: bold;
+  font-style: italic, oblique;
+}
+
+body {
+  font-family: "Computer Modern", serif;
+  color: #ff7657;
+  background: #fbeed7;
+}
+
+h1 {
+  font-size: 100pt;
+}
+
+a {
+  background: #ffba5a !important;
+  font-size: 20pt !important;
+  color: #665c84 !important;
+}
+
+a,h1 {
+  -o-transition:.5s;
+  -ms-transition:.5s;
+  -moz-transition:.5s;
+  -webkit-transition:.5s;
+  transition:.5s;
+  transition-timing-function: ease
+  }
+  
+a:hover {
+  color: #ff7657 !important;
+  cursor:pointer;
+}
+
+h1:hover {
+  color: #ffba5a;
+}
+
+canvas {
+  /* position:absolute; */
+  justify-content: center;
+  vertical-align: center;
+  justify-items: center;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  /* z-index: -3 !important; */
+}
+
+.outer {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+}
+
+.btn {
+  -webkit-box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 0.1875rem 0.1875rem 0 rgba(0, 0, 0, 0.1) !important;
+  /* padding: 1.25rem 2rem; */
+  /* font-size: 80%; */
+  text-transform: uppercase;
+  letter-spacing: .15rem;
+  border: 0;
+}
+
+.btn-primary {
+  background-color: #ffba5a;
+  font-weight: bold;
+  /* font-size: 5pt !important; */
+  color: whitesmoke;
+  text-shadow: 1px 1px 0 #7A7A7A;
+}
+
+.btn-primary:hover {
+  background-color: #ff7657;
+}
+
+.btn-primary:focus {
+  background-color: #ff7657;
+}
+
+.btn-primary:active {
+  background-color: #ff7657 !important;
 }
