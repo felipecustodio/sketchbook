@@ -1,0 +1,2 @@
+rsync --info=progress2 -a pde-starter/ "$1"
+mv "$1"/pde-starter.pde "$1"/"$1".pde

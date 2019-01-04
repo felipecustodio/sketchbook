@@ -1,0 +1,1 @@
+rsync --info=progress2 -a p5-starter/ "$1"
