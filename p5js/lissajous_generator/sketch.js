@@ -66,7 +66,7 @@ let presets = [
 
 // cool starters:
 // 23, 337 max 50 speed 0.02
-// 63, 32 max 50 
+// 63, 32 max 50
 // 1000, 471 max 50
 // 837, 523 com maxSize 5 e angleSpeed 0.02 - fucking awesome
 // 837, 523
