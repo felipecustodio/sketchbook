@@ -1,10 +1,26 @@
+# macOS
 .DS_Store
-applet
-application.linux32
-application.linux64
-application.windows32
-application.windows64
-application.macosx
+
+# Processing build artifacts
+applet/
+application.linux32/
+application.linux64/
+application.windows32/
+application.windows64/
+application.macosx/
+build/
+out/
+
+# IDE files
+.vscode/
+.ropeproject/
+*.swp
+*.swo
+*~
+
+# Course materials (archived)
 /The-Nature-of-Code-Kadenze/*
-The-Nature-of-Code-Kadenze
-*.png
+The-Nature-of-Code-Kadenze/
+
+# Image outputs (optional - comment out if you want to track images)
+# *.png

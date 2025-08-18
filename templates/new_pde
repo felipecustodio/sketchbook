@@ -1,0 +1,24 @@
+#!/bin/bash
+# Script to create a new Processing project from template
+# Usage: ./new_pde project_name
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <project_name>"
+    echo "Creates a new Processing project in the processing/ directory"
+    exit 1
+fi
+
+PROJECT_NAME="$1"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+TARGET_DIR="$ROOT_DIR/processing/$PROJECT_NAME"
+
+if [ -d "$TARGET_DIR" ]; then
+    echo "Error: Project '$PROJECT_NAME' already exists in processing/ directory"
+    exit 1
+fi
+
+echo "Creating new Processing project: $PROJECT_NAME"
+rsync --info=progress2 -a "$SCRIPT_DIR/pde-starter/" "$TARGET_DIR/"
+mv "$TARGET_DIR/pde-starter.pde" "$TARGET_DIR/${PROJECT_NAME}.pde"
+echo "Project created at: $TARGET_DIR"

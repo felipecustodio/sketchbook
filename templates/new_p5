@@ -1,0 +1,23 @@
+#!/bin/bash
+# Script to create a new p5.js project from template
+# Usage: ./new_p5 project_name
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <project_name>"
+    echo "Creates a new p5.js project in the p5js/ directory"
+    exit 1
+fi
+
+PROJECT_NAME="$1"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+TARGET_DIR="$ROOT_DIR/p5js/$PROJECT_NAME"
+
+if [ -d "$TARGET_DIR" ]; then
+    echo "Error: Project '$PROJECT_NAME' already exists in p5js/ directory"
+    exit 1
+fi
+
+echo "Creating new p5.js project: $PROJECT_NAME"
+rsync --info=progress2 -a "$SCRIPT_DIR/p5-starter/" "$TARGET_DIR/"
+echo "Project created at: $TARGET_DIR"
