@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $(basename "$0") <target-directory>" >&2
+  exit 1
+fi
+
+script_dir="$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd -- "$script_dir/.." && pwd)"
+template_dir="$repo_root/templates/p5-starter"
+
+target_dir="$1"
+mkdir -p "$target_dir"
+
+rsync --info=progress2 -a "$template_dir/" "$target_dir/"
