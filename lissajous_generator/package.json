@@ -9,13 +9,13 @@
   "author": "Felipe Custódio",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^5.11.1",
-    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint": "^9.39.1",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-p5js": "^1.0.1",
     "eslint-plugin-html": "^5.0.0",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-import": "^2.32.0",
     "htmlhint": "^0.10.1",
-    "stylelint": "^9.9.0"
+    "stylelint": "^16.25.0"
   },
   "dependencies": {
     "tone": "^0.12.80"
