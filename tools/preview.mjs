@@ -38,8 +38,10 @@ async function browserPreviews(sketches) {
         }
       }
       await page.waitForTimeout(item.captureDelayMs || 900);
+      await page.evaluate(() => noLoop());
       if (errors.length) throw new Error(`${item.id}: ${errors.join('; ')}`);
-      await canvas.screenshot({ path: join(previews, `${item.id}.png`) });
+      const clip = await canvas.boundingBox();
+      await page.screenshot({ path: join(previews, `${item.id}.png`), clip, timeout: 60000 });
       if (item.id === 'golden_ratio') {
         await page.keyboard.press('p');
         if (!await page.evaluate(() => toggle_pause)) throw new Error('Golden ratio pause control failed');
