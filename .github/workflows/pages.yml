@@ -66,3 +66,14 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Verify published gallery and demos
+        env:
+          SKETCHBOOK_SITE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: node tools/preview.mjs --verify-only
