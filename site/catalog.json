@@ -1,0 +1,18 @@
+[
+  {"id":"chrysanthemum","title":"Chrysanthemum","kind":"p5","description":"A flower drawn from repeating three-dimensional curves.","tags":["geometry","3D"],"captureDelayMs":900},
+  {"id":"conway","title":"Conway","kind":"p5","description":"A grid experiment with Conway's Game of Life.","tags":["simulation","grid"],"captureDelayMs":900},
+  {"id":"flights","title":"Flights","kind":"p5","description":"Flight routes traced across a map from airport data.","tags":["data","map"],"captureDelayMs":1500},
+  {"id":"forces","title":"Forces","kind":"p5","description":"Particles moving under simple forces.","tags":["simulation","motion"],"captureDelayMs":900},
+  {"id":"fractal_circles","title":"Fractal circles","kind":"p5","description":"Nested circles built through repetition.","tags":["geometry","recursion"],"captureDelayMs":900},
+  {"id":"golden_ratio","title":"Golden ratio","kind":"p5","description":"An interactive study of the golden ratio.","tags":["geometry","interactive"],"entry":"sketch.html","captureDelayMs":900,"alternates":[{"title":"Introduction","path":"index.html"}]},
+  {"id":"harmonograph_p5","title":"Harmonograph · browser","kind":"p5","description":"A moving harmonograph with sound and pointer interaction.","tags":["motion","sound","3D"],"captureDelayMs":3000,"previewClicks":6,"alternates":[{"title":"Particle trail study","path":"ES6_Version/index.html","canvas":true}]},
+  {"id":"klein_cycloid","title":"Klein cycloid","kind":"p5","description":"A three-dimensional cycloid study.","tags":["geometry","3D"],"captureDelayMs":900},
+  {"id":"lissajous_generator","title":"Lissajous generator","kind":"p5","description":"Draw and tune Lissajous curves with sliders and sound.","tags":["geometry","sound","interactive"],"entry":"sketch.html","captureDelayMs":1300,"alternates":[{"title":"Introduction","path":"index.html"}]},
+  {"id":"map","title":"Map","kind":"p5","description":"Country locations connected across a world map.","tags":["data","map"],"captureDelayMs":1500},
+  {"id":"names","title":"Brazilian names","kind":"p5","description":"A playful name generator using a Brazilian names dataset.","tags":["data","typography","interactive"],"captureDelayMs":900},
+  {"id":"prolatespheroid","title":"Prolate spheroid","kind":"p5","description":"A rotating surface built from geometric points.","tags":["geometry","3D"],"captureDelayMs":900},
+  {"id":"pubg_circle","title":"PUBG circle","kind":"p5","description":"A simulation of shrinking safe zones on a map.","tags":["simulation","map"],"captureDelayMs":900},
+  {"id":"harmonograph","title":"Harmonograph · Processing","kind":"processing","description":"A rendered study of pendulum paths and motion blur.","tags":["motion","rendering"],"previewFrame":1},
+  {"id":"harmonograph_3d","title":"Harmonograph 3D","kind":"processing","description":"A three-dimensional harmonograph rendered with Processing.","tags":["motion","3D","rendering"],"previewFrame":60},
+  {"id":"numeric_sequences","title":"Numeric sequences","kind":"processing","description":"Number sequences turned into animated drawings.","tags":["data","rendering"],"previewFrame":40}
+]

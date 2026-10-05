@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LISSAJOUS CURVE GENERATOR V0.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- p5.js -->
+    <script src="../../../vendor/p5.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+  <body>
+    <!-- Sketch -->
+    <script src="sketch.js"></script>
+
+    <audio id="audio" controls loop autoplay>
+        <source src="assets/bg.mp3" type="audio/mpeg" >
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        var audio = document.getElementById("audio");
+        audio.volume = 0.3;
+    </script>
+  </body>
+</html>

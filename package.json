@@ -1,0 +1,21 @@
+{
+  "name": "sketchbook",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node tools/site.mjs build",
+    "dev": "node tools/site.mjs dev",
+    "check": "node tools/site.mjs check",
+    "preview": "node tools/preview.mjs",
+    "new": "node tools/new.mjs"
+  },
+  "dependencies": {
+    "p5": "2.3.4"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

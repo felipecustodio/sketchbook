@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123844">
+  <title>Sketchbook · Felipe Custódio</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="gallery.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <nav class="topline" aria-label="Main navigation"><a class="wordmark" href="./">F/C <span>SKETCHBOOK</span></a><a href="https://github.com/felipecustodio/sketchbook">Source ↗</a></nav>
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Processing / p5.js / ongoing experiments</p>
+        <h1>Lines, loops,<br><em>and little worlds.</em></h1>
+        <p class="intro">A collection of visual studies in geometry, motion, data and sound. Open a sketch to see the code or try it in your browser.</p>
+        <a class="hero-link" href="#browse">Browse the sketches ↓</a>
+      </div>
+      <div class="orbit" aria-hidden="true"><span></span><span></span><span></span><i></i></div>
+    </div>
+  </header>
+  <main id="browse" class="content">
+    <div class="section-heading"><div><p class="eyebrow">The collection</p><h2>Browse sketches</h2></div><p id="result-count" role="status" aria-live="polite"></p></div>
+    <div class="controls">
+      <label class="search-label" for="search">Search</label><input id="search" type="search" placeholder="Title, subject, or technique…" autocomplete="off">
+      <label class="select-label" for="kind">Made with</label><select id="kind"><option value="all">All tools</option><option value="p5">p5.js</option><option value="processing">Processing</option></select>
+    </div>
+    <div id="tags" class="tags" aria-label="Filter by subject"></div>
+    <div id="gallery" class="gallery"></div>
+    <p id="empty" class="empty" hidden>No sketches match those filters. Try another search or subject.</p>
+  </main>
+  <footer><span>Felipe Custódio · Creative coding studies</span><a href="https://github.com/felipecustodio/sketchbook">Explore the repository ↗</a></footer>
+</body>
+</html>
