@@ -8,6 +8,7 @@ import { build, catalog, root, startServer } from './site.mjs';
 const args = process.argv.slice(2);
 const browserOnly = args.includes('--browser-only');
 const processingOnly = args.includes('--processing-only');
+const verifyOnly = args.includes('--verify-only');
 const selectedId = args.find(arg => !arg.startsWith('--'));
 const items = (await catalog()).filter(item => !selectedId || item.id === selectedId);
 if (!items.length) throw new Error(`Unknown sketch: ${selectedId}`);
@@ -15,9 +16,9 @@ const previews = join(root, 'site', 'previews');
 await mkdir(previews, { recursive: true });
 
 async function browserPreviews(sketches) {
-  await build();
-  const server = await startServer();
-  const base = `http://127.0.0.1:${server.address().port}/sketchbook/`;
+  if (!process.env.SKETCHBOOK_SITE_URL) await build();
+  const server = process.env.SKETCHBOOK_SITE_URL ? null : await startServer();
+  const base = process.env.SKETCHBOOK_SITE_URL || `http://127.0.0.1:${server.address().port}/sketchbook/`;
   const browser = await chromium.launch({ headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader'] });
   try {
     for (const item of sketches) {
@@ -40,8 +41,10 @@ async function browserPreviews(sketches) {
       await page.waitForTimeout(item.captureDelayMs || 900);
       await page.evaluate(() => noLoop());
       if (errors.length) throw new Error(`${item.id}: ${errors.join('; ')}`);
-      const clip = await canvas.boundingBox();
-      await page.screenshot({ path: join(previews, `${item.id}.png`), clip, timeout: 60000 });
+      if (!verifyOnly) {
+        const clip = await canvas.boundingBox();
+        await page.screenshot({ path: join(previews, `${item.id}.png`), clip, timeout: 60000 });
+      }
       if (item.id === 'golden_ratio') {
         await page.keyboard.press('p');
         if (!await page.evaluate(() => toggle_pause)) throw new Error('Golden ratio pause control failed');
@@ -94,7 +97,7 @@ async function browserPreviews(sketches) {
         if (errors.length) throw new Error(`${item.id} alternate: ${errors.join('; ')}`);
         await page.close();
       }
-      console.log(`Captured p5/${item.id}`);
+      console.log(`${verifyOnly ? 'Verified' : 'Captured'} p5/${item.id}`);
     }
     const gallery = await browser.newPage();
     await gallery.goto(base);
@@ -116,6 +119,7 @@ async function browserPreviews(sketches) {
     for (const item of await catalog()) {
       await gallery.goto(new URL(`sketch.html?id=${item.id}`, base).href);
       await gallery.waitForFunction(title => document.querySelector('#title').textContent === title, item.title);
+      await gallery.waitForFunction(() => document.querySelector('#preview img')?.naturalWidth > 0);
       const source = gallery.locator('#actions a', { hasText: 'View source' });
       if (!(await source.getAttribute('href')).endsWith(`/sketches/${item.kind}/${item.id}`)) throw new Error(`Source link failed: ${item.id}`);
       if (item.kind === 'p5' && !await gallery.locator('a.primary-action').count()) throw new Error(`Demo link missing: ${item.id}`);
@@ -123,7 +127,7 @@ async function browserPreviews(sketches) {
     await gallery.close();
   } finally {
     await browser.close();
-    await new Promise(resolve => server.close(resolve));
+    if (server) await new Promise(resolve => server.close(resolve));
   }
 }
 
@@ -158,5 +162,5 @@ async function processingPreviews(sketches) {
 }
 
 if (!processingOnly) await browserPreviews(items.filter(item => item.kind === 'p5'));
-if (!browserOnly) await processingPreviews(items.filter(item => item.kind === 'processing'));
-await build();
+if (!browserOnly && !verifyOnly) await processingPreviews(items.filter(item => item.kind === 'processing'));
+if (!verifyOnly) await build();

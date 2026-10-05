@@ -38,6 +38,8 @@ npm run preview -- harmonograph --processing-only
 
 The Processing preview mode reads `SKETCHBOOK_PREVIEW_OUT` and `SKETCHBOOK_PREVIEW_FRAME`, saves that frame with `saveFrame()`, and exits. `npm run preview` captures every browser and Processing sketch, then rebuilds `dist/`. `npm run check` validates catalog entries, sketch paths, and committed preview files, and builds the site. CI runs both commands before publishing the freshly generated `dist/` artifact to GitHub Pages on `master`.
 
+Run `npm run preview -- --verify-only` to check the gallery and browser demos without changing preview files. Set `SKETCHBOOK_SITE_URL` to a deployed URL ending in `/sketchbook/` to run those same checks against the published site. In repository Settings → Pages, the publishing source must be **GitHub Actions**.
+
 ## Layout
 
 | Path | Contents |
