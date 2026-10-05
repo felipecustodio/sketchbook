@@ -7,4 +7,10 @@ application.windows64
 application.macosx
 /The-Nature-of-Code-Kadenze/*
 The-Nature-of-Code-Kadenze
-*.png
+node_modules/
+dist/
+sketches/processing/*/build/
+sketches/processing/*/out/
+sketches/processing/*/frames/frame_*.png
+sketches/processing/*/frame_*.png
+site/previews/*.capture.png

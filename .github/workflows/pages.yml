@@ -1,0 +1,79 @@
+name: Check and publish sketchbook
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Install Processing 4.5.7
+        shell: bash
+        run: |
+          curl -fL --retry 3 -o "$RUNNER_TEMP/processing.zip" \
+            'https://github.com/processing/processing4/releases/download/processing-1435-4.5.7/processing-4.5.7-linux-x64-portable.zip'
+          echo 'b3f04e18f5b3012662663c49558bf05504fcfb7fc73db7e6f558196c00fe92e0  '"$RUNNER_TEMP/processing.zip" | sha256sum -c -
+          mkdir -p "$RUNNER_TEMP/processing"
+          unzip -q "$RUNNER_TEMP/processing.zip" -d "$RUNNER_TEMP/processing"
+          processing_cli=$(find "$RUNNER_TEMP/processing" -type f \( -name processing -o -name Processing \) -path '*/bin/*' -print -quit)
+          test -n "$processing_cli"
+          chmod +x "$processing_cli"
+          echo "PROCESSING_CLI=$processing_cli" >> "$GITHUB_ENV"
+      - name: Capture and verify sketches
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1-mesa-dri
+          npm run preview
+          npm run check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: generated-previews
+          path: site/previews/*.png
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-site
+          path: dist
+      - uses: actions/configure-pages@v5
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      - uses: actions/upload-pages-artifact@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Verify published gallery and demos
+        env:
+          SKETCHBOOK_SITE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: node tools/preview.mjs --verify-only
