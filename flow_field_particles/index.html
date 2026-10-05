@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Image-Driven Flow Field — p5.js Playground</title>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <div class="panel">
+    <h1>Image-Driven Flow Field</h1>
+
+    <h2>Image</h2>
+    <div class="row">
+      <label>Load image</label>
+      <div class="twoCols">
+        <input id="file" type="file" accept="image/*">
+        <button id="fit" title="Resize canvas to image" class="primary">Fit canvas</button>
+      </div>
+      <output></output>
+    </div>
+    <div class="drop" id="drop">Drag & drop an image here</div>
+    <div class="row">
+      <label>Show source</label>
+      <select id="showSource">
+        <option value="off">Off</option>
+        <option value="behind">Behind trails</option>
+        <option value="tiny">Tiny preview</option>
+      </select>
+      <output></output>
+    </div>
+
+    <h2>Algorithm</h2>
+    <div class="row">
+      <label>Mode</label>
+      <select id="mode">
+        <option value="edge">Edge-Tangent (Sobel)</option>
+        <option value="brightness">Brightness → Angle</option>
+      </select>
+      <output></output>
+    </div>
+    <div class="row">
+      <label>Cell size</label>
+      <input id="cell" type="range" min="2" max="24" value="4" step="1">
+      <output>4</output>
+    </div>
+    <div class="row">
+      <label>Blur</label>
+      <input id="blur" type="range" min="0" max="5" value="1" step="1">
+      <output>1</output>
+    </div>
+    <div class="row">
+      <label>Invert map</label>
+      <select id="invert">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+      </select>
+      <output></output>
+    </div>
+    <div class="row">
+      <label>Angle offset</label>
+      <input id="angleOffset" type="range" min="-3.1416" max="3.1416" value="0" step="0.01">
+      <output>0</output>
+    </div>
+    <div class="row">
+      <label>Modulate by strength</label>
+      <select id="modType">
+        <option value="none">None</option>
+        <option value="speed">Speed</option>
+        <option value="alpha">Alpha</option>
+        <option value="speedAlpha">Speed + Alpha</option>
+      </select>
+      <output></output>
+    </div>
+
+    <h2>Particles</h2>
+    <div class="row">
+      <label>Count</label>
+      <input id="count" type="range" min="500" max="30000" value="8000" step="500">
+      <output>8000</output>
+    </div>
+    <div class="row">
+      <label>Step</label>
+      <input id="step" type="range" min="0.2" max="4" value="1.2" step="0.1">
+      <output>1.2</output>
+    </div>
+    <div class="row">
+      <label>Jitter</label>
+      <input id="jitter" type="range" min="0" max="0.5" value="0.08" step="0.01">
+      <output>0.08</output>
+    </div>
+    <div class="row">
+      <label>Stroke width</label>
+      <input id="thickness" type="range" min="0.5" max="2.5" value="1" step="0.1">
+      <output>1</output>
+    </div>
+    <div class="row">
+      <label>Stroke alpha</label>
+      <input id="alpha" type="range" min="4" max="200" value="40" step="1">
+      <output>40</output>
+    </div>
+    <div class="row">
+      <label>Fade per frame</label>
+      <input id="fade" type="range" min="0" max="50" value="12" step="1">
+      <output>12</output>
+    </div>
+    <div class="row">
+      <label>Blend mode</label>
+      <select id="blend">
+        <option value="ADD">ADD</option>
+        <option value="BLEND">BLEND</option>
+        <option value="SCREEN">SCREEN</option>
+        <option value="MULTIPLY">MULTIPLY</option>
+        <option value="OVERLAY">OVERLAY</option>
+        <option value="LIGHTEST">LIGHTEST</option>
+        <option value="DARKEST">DARKEST</option>
+        <option value="DIFFERENCE">DIFFERENCE</option>
+      </select>
+      <output></output>
+    </div>
+    <div class="row">
+      <label>Background</label>
+      <input id="bg" type="color" value="#000000">
+      <output></output>
+    </div>
+
+    <div class="btns">
+      <button id="respawn">Respawn</button>
+      <button id="clear">Clear Trails</button>
+      <button id="toggle" class="primary">Pause</button>
+      <button id="save">Save PNG</button>
+      <button id="showField">Toggle Field Vectors</button>
+    </div>
+
+    <div class="footer">
+      Tip: For “threaded” look use Edge-Tangent, dark background, low stroke alpha, ADD blend, and lots of particles.
+    </div>
+  </div>
+
+  <div class="canvasWrap">
+    <!-- p5 canvas placed here -->
+    <div class="overlay" id="stats">Waiting for image…</div>
+  </div>
+</div>
+
+<!-- p5.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.3/p5.min.js"></script>
+<script src="sketch.js"></script>
+</body>
+</html>
